@@ -29,6 +29,8 @@ class Cameo(object):
         space  -> Take a screenshot.
         tab    -> Start/stop recording a screencast.
         escape -> Quit.
+        G      -> Apply a Grayscale filter.
+        C      -> Apply a Colorful filter.
 
         """
         if keycode == 32: # space
@@ -41,6 +43,10 @@ class Cameo(object):
                 self._captureManager.stopWritingVideo()
         elif keycode == 27: # escape
             self._windowManager.destroyWindow()
+        elif keycode == ord('g') or keycode == ord('G'):  # G key
+            self._captureManager.toggleGrayscale()
+        elif keycode == ord('c') or keycode == ord('C'):  # C key
+            self._captureManager.toggleColorful()
 
 if __name__=="__main__":
     Cameo().run()

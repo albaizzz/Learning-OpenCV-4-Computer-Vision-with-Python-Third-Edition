@@ -2,6 +2,7 @@ import cv2
 
 videoCapture = cv2.VideoCapture('MyInputVid.avi')
 fps = videoCapture.get(cv2.CAP_PROP_FPS)
+print(fps)
 size = (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)),
         int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 videoWriter = cv2.VideoWriter(

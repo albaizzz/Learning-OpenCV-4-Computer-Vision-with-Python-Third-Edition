@@ -23,6 +23,8 @@ class CaptureManager(object):
         self._startTime = None
         self._framesElapsed = 0
         self._fpsEstimate = None
+        self._applyGrayscale = False  # New attribute for grayscale filter
+        self._applyColorful = False  # New attribute for colorful filter
 
     @property
     def channel(self):
@@ -39,6 +41,13 @@ class CaptureManager(object):
         if self._enteredFrame and self._frame is None:
             _, self._frame = self._capture.retrieve(
                     self._frame, self.channel)
+        if self._frame is not None:
+            if self._applyGrayscale:  # Apply grayscale filter if enabled
+                if len(self._frame.shape) == 3:  # Check if frame has 3 channels
+                    self._frame = cv2.cvtColor(self._frame, cv2.COLOR_BGR2GRAY)
+            elif self._applyColorful:  # Apply colorful filter if enabled
+                if len(self._frame.shape) == 3:  # Ensure frame has 3 channels
+                    self._frame = cv2.applyColorMap(self._frame, cv2.COLORMAP_BONE)
         return self._frame
 
     @property
@@ -137,6 +146,14 @@ class CaptureManager(object):
                 fps, size)
 
         self._videoWriter.write(self._frame)
+
+    def toggleGrayscale(self):
+        """Toggle the grayscale filter on or off."""
+        self._applyGrayscale = not self._applyGrayscale
+
+    def toggleColorful(self):
+        """Toggle the colorful filter on or off."""
+        self._applyColorful = not self._applyColorful
 
 
 class WindowManager(object):
